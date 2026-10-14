@@ -124,7 +124,6 @@ import {
   registerUserRoutes,
 } from "./user-routes";
 import { registerNotebookRoutes } from "./notebook-routes";
-import { registerNotebookShareRoutes, registerPublicNotebookShareRoutes } from "./notebook-share-routes";
 import { registerMemoShareRoutes, registerPublicShareRoutes } from "./share-routes";
 import { registerPublicTableFormRoutes, registerTableFormRoutes } from "./table-form-routes";
 import {
@@ -250,7 +249,6 @@ app.get("/api/health", async (c) => {
 app.get("/api/openapi.json", (c) => c.json(apiProbe));
 
 registerPublicShareRoutes(app);
-registerPublicNotebookShareRoutes(app);
 registerPublicTableFormRoutes(app);
 
 registerAuthRoutes(app, {
@@ -339,7 +337,6 @@ registerPluginDistributionRoutes(app);
 registerScheduledTaskRoutes(app);
 registerWorkspaceExtensionRoutes(app, { isDemoMode: (...args) => isDemoMode(...args) });
 registerMemoShareRoutes(app);
-registerNotebookShareRoutes(app);
 registerTableFormRoutes(app);
 registerTemplateRoutes(app, {
   createMemoRecord: (...args) => createMemoRecord(...args),

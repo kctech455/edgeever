@@ -48,7 +48,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { NotebookTreeItem } from "./NotebookTreeItem";
-import { api, getConfiguredDesktopApiBaseUrl } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { useShowDescendantNotesPreference } from "@/lib/descendant-notes-preference";
 import { BETA_BADGE_CLASSNAME } from "@/lib/workspace-ui";
@@ -638,14 +637,6 @@ export const NotebookPane = ({
 
   const notebooks = notebooksQuery.data?.notebooks ?? [];
   const notebookSortOptions = useMemo(() => getNotebookSortOptions(t), [t]);
-  const notebookSharesQuery = useQuery({
-    queryKey: ["notebook-shares", getConfiguredDesktopApiBaseUrl(), user?.id],
-    queryFn: () => api.listNotebookShares(),
-    enabled: isOnline,
-    retry: false,
-    refetchOnMount: "always",
-  });
-  const sharedNotebookIds = useMemo(() => new Set(notebookSharesQuery.data?.shares.map(share => share.notebookId) ?? []), [notebookSharesQuery.data]);
   const tree = useMemo(() => buildNotebookTree(notebooks, getNotebookSortComparator(notebookSortMode)), [notebooks, notebookSortMode]);
   const isLoading = notebooksQuery.isLoading;
   const activeNotebookSortLabel = notebookSortOptions.find((option) => option.value === notebookSortMode)?.label ?? t("options.notebookSort.nameAsc");
@@ -875,7 +866,6 @@ export const NotebookPane = ({
                 onOpenChange={handleNotebookOpenChange}
                 expandSiblingsRequest={expandSiblingsRequest}
                 onExpandSiblings={handleExpandNotebookSiblings}
-                sharedNotebookIds={sharedNotebookIds}
                 showDescendantNotes={showDescendantNotes}
               />
             ))}
